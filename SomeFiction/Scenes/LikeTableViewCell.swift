@@ -1,18 +1,14 @@
 //
-//  MovieTableViewCell.swift
+//  LikeTableViewCell.swift
 //  SomeFiction
 //
-//  Created by 장기화 on 2022/05/20.
+//  Created by 장기화 on 2022/05/23.
 //
 
 import UIKit
-import SnapKit
-import Kingfisher
 
-class MovieTableViewCell: UITableViewCell {
-    private let shared = MovieManager.shared
-    static let identifier = "MovieTableViewCell"
-    var movie: Movie?
+class LikeTableViewCell: UITableViewCell {
+    static let identifier = "LikeTableViewCell"
     
     private lazy var movieImageView: UIImageView = {
         let view = UIImageView()
@@ -93,28 +89,11 @@ class MovieTableViewCell: UITableViewCell {
         actorLabel.text = "출연: \(movie.newActor)"
         ratingLabel.text = "평점: \(movie.userRating)"
         
-        self.movie = movie
-        
         let defaults = UserDefaults.standard.bool(forKey: movie.newTitle)
         let imageName = defaults ? "star.fill" : "star"
         starButton.setImage(UIImage(systemName: imageName), for: .normal)
     }
     
     @objc private func tapLikeButton() {
-        guard var movie = movie else { return }
-        movie.isLiked.toggle()
-        
-        self.movie!.isLiked = movie.isLiked
-        UserDefaults.standard.set(movie.isLiked, forKey: movie.newTitle)
-        
-        if movie.isLiked {
-            shared.likeMovieList.append(movie)
-        } else {
-            
-        }
-        
-        let imageName = movie.isLiked ? "star.fill" : "star"
-        starButton.setImage(UIImage(systemName: imageName), for: .normal)
-        print("⭐️ \(movie.isLiked), \(movie.newTitle)")
     }
 }

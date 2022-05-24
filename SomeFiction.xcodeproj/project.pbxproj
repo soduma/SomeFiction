@@ -20,6 +20,8 @@
 		A0F172012836165300DF784B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F172002836165300DF784B /* NetworkManager.swift */; };
 		A0F172032837389700DF784B /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F172022837389700DF784B /* MovieTableViewCell.swift */; };
 		A0F172052837529E00DF784B /* DetailMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F172042837529E00DF784B /* DetailMovieViewController.swift */; };
+		A0F17209283B71D500DF784B /* LikeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F17208283B71D500DF784B /* LikeTableViewCell.swift */; };
+		A0F1720C283C971900DF784B /* MovieManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1720B283C971900DF784B /* MovieManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		A0F172002836165300DF784B /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		A0F172022837389700DF784B /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		A0F172042837529E00DF784B /* DetailMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieViewController.swift; sourceTree = "<group>"; };
+		A0F17208283B71D500DF784B /* LikeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeTableViewCell.swift; sourceTree = "<group>"; };
+		A0F1720B283C971900DF784B /* MovieManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +76,8 @@
 			children = (
 				A039D5912835DAA700B7E677 /* AppDelegate.swift */,
 				A039D5932835DAA700B7E677 /* SceneDelegate.swift */,
-				A0F171FE2836154A00DF784B /* NaverResponse.swift */,
-				A0F172002836165300DF784B /* NetworkManager.swift */,
+				A0F1720E283CBE6100DF784B /* Model */,
+				A0F1720D283CBE4000DF784B /* Manager */,
 				A0F171FD2836140900DF784B /* Scenes */,
 				A039D59A2835DAA900B7E677 /* Assets.xcassets */,
 				A039D59C2835DAA900B7E677 /* LaunchScreen.storyboard */,
@@ -86,11 +90,29 @@
 			isa = PBXGroup;
 			children = (
 				A039D5952835DAA700B7E677 /* MainViewController.swift */,
+				A0F172022837389700DF784B /* MovieTableViewCell.swift */,
 				A0F172042837529E00DF784B /* DetailMovieViewController.swift */,
 				A0F171FB2835E41E00DF784B /* LikeViewController.swift */,
-				A0F172022837389700DF784B /* MovieTableViewCell.swift */,
+				A0F17208283B71D500DF784B /* LikeTableViewCell.swift */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		A0F1720D283CBE4000DF784B /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				A0F172002836165300DF784B /* NetworkManager.swift */,
+				A0F1720B283C971900DF784B /* MovieManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		A0F1720E283CBE6100DF784B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A0F171FE2836154A00DF784B /* NaverResponse.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,7 +197,9 @@
 			files = (
 				A0F172012836165300DF784B /* NetworkManager.swift in Sources */,
 				A039D5962835DAA700B7E677 /* MainViewController.swift in Sources */,
+				A0F1720C283C971900DF784B /* MovieManager.swift in Sources */,
 				A0F172032837389700DF784B /* MovieTableViewCell.swift in Sources */,
+				A0F17209283B71D500DF784B /* LikeTableViewCell.swift in Sources */,
 				A0F171FF2836154A00DF784B /* NaverResponse.swift in Sources */,
 				A0F172052837529E00DF784B /* DetailMovieViewController.swift in Sources */,
 				A039D5922835DAA700B7E677 /* AppDelegate.swift in Sources */,

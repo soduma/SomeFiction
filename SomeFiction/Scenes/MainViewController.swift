@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 
 class MainViewController: UIViewController {
+    private let shared = MovieManager.shared
     let networkManager = NetworkManager()
-    var movieList = [Movie]()
     var searchText = "국가"
     
     private lazy var headlineLabel: UILabel = {
@@ -28,7 +28,7 @@ class MainViewController: UIViewController {
         button.layer.cornerRadius = 4
         button.layer.borderWidth = 1
         button.layer.borderColor = CGColor(gray: 0.9, alpha: 1)
-        button.addTarget(self, action: #selector(tapLikeButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(tapFavoriteButton), for: .touchUpInside)
         return button
     }()
     
@@ -41,6 +41,7 @@ class MainViewController: UIViewController {
     private lazy var searchBar: UISearchBar = {
         let bar = UISearchBar()
         bar.delegate = self
+        bar.text = searchText
         bar.searchBarStyle = .minimal
         return bar
     }()
@@ -50,6 +51,7 @@ class MainViewController: UIViewController {
         view.delegate = self
         view.dataSource = self
         view.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.identifier)
+        view.keyboardDismissMode = .onDrag
         return view
     }()
     
@@ -57,23 +59,29 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         Task {
-            await movieFetch()
             layout()
+            await movieFetch(searchText: searchText)
         }
     }
     
-    @objc func tapLikeButton() {
-        let vc = LikeViewController()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    @objc func tapFavoriteButton() {
+        let vc = UINavigationController(rootViewController: LikeViewController())
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     
-    private func movieFetch() async {
+    private func movieFetch(searchText: String) async {
         let data = await networkManager.getMovies(searchText: searchText)
         switch data {
         case .success(let result):
-            movieList = result.items
-            print(movieList)
+            shared.movieList = result.items
+            tableView.reloadData()
         case .failure(let error):
             print(error.localizedDescription)
         }
@@ -81,7 +89,6 @@ class MainViewController: UIViewController {
     
     private func layout() {
         title = ""
-//        navigationController?.navigationBar.isHidden = true
         
         [headlineLabel, likeButton, dividerView, searchBar, tableView]
             .forEach { view.addSubview($0) }
@@ -117,32 +124,34 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movieList.count
+        return shared.movieList.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else { return UITableViewCell() }
-        cell.update(movieList[indexPath.row])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell
+        else { return UITableViewCell() }
+        cell.update(shared.movieList[indexPath.row])
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailMovieViewController(movie: movieList[indexPath.row])
+        let vc = DetailMovieViewController(movie: shared.movieList[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension MainViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.searchText = searchText
+        Task {
+            await movieFetch(searchText: searchText)
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("tap")
         searchBar.resignFirstResponder()
     }
 }

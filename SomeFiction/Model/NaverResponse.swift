@@ -20,6 +20,12 @@ struct Movie: Codable {
     private let actor: String
     let userRating: String
     
+    var isLiked: Bool = false
+    
+    enum CodingKeys: String, CodingKey {
+        case title, link, image, director, actor, userRating
+    }
+    
     var newTitle: String {
         return title.replacingOccurrences(of: "<b>", with: "")
             .replacingOccurrences(of: "</b>", with: "")

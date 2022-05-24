@@ -33,17 +33,24 @@ class DetailMovieViewController: UIViewController {
         return label
     }()
     
-    private lazy var starLabel: UILabel = {
+    private lazy var ratingLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
         return label
     }()
     
     private lazy var stackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [directorLabel, actorLabel, starLabel])
+        let view = UIStackView(arrangedSubviews: [directorLabel, actorLabel, ratingLabel])
         view.axis = .vertical
         view.distribution = .fillEqually
         return view
+    }()
+    
+    private lazy var starButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .systemYellow
+        button.addTarget(self, action: #selector(tapLikeButton), for: .touchUpInside)
+        return button
     }()
     
     private lazy var webView: WKWebView = {
@@ -76,6 +83,7 @@ class DetailMovieViewController: UIViewController {
     private func layout() {
         title = movie.newTitle
         view.backgroundColor = .systemBackground
+        navigationController?.isNavigationBarHidden = false
         
         [movieImageView, stackView, webView, indicator]
             .forEach { view.addSubview($0) }
@@ -94,6 +102,11 @@ class DetailMovieViewController: UIViewController {
             $0.bottom.equalTo(movieImageView)
         }
         
+        stackView.addSubview(starButton)
+        starButton.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview().inset(8)
+        }
+        
         webView.snp.makeConstraints {
             $0.top.equalTo(stackView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
@@ -108,11 +121,17 @@ class DetailMovieViewController: UIViewController {
         movieImageView.kf.setImage(with: imageURL)
         directorLabel.text = "감독: \(movie.newDirector)"
         actorLabel.text = "출연: \(movie.newActor)"
-        starLabel.text = "평점: \(movie.userRating)"
+        ratingLabel.text = "평점: \(movie.userRating)"
+        
+        let imageName = movie.isLiked ? "star.fill" : "star"
+        starButton.setImage(UIImage(systemName: imageName), for: .normal)
         
         guard let url = URL(string: movie.link) else { return }
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+    
+    @objc private func tapLikeButton() {
     }
 }
 
